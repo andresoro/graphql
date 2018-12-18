@@ -1,2 +1,2 @@
 # rested
-Turn a schema into a REST api in seconds 🤓
+Turn a schema into a graphql api in seconds 🤓
