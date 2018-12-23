@@ -15,7 +15,6 @@ type User struct {
 }
 
 func addUser(db *badger.DB, u User) error {
-
 	var buf bytes.Buffer
 	binary.Write(&buf, binary.BigEndian, u)
 	b, err := ioutil.ReadAll(&buf)
@@ -31,5 +30,28 @@ func addUser(db *badger.DB, u User) error {
 		_ = txn.Commit()
 		return nil
 	})
+	if err != nil {
+		return err
+	}
 	return nil
+}
+
+func getUser(db *badger.DB, id graphql.ID) ([]byte, error) {
+
+	var user []byte
+
+	err := db.View(func(txn *badger.Txn) error {
+		item, err := txn.Get([]byte(id))
+		if err != nil {
+			return err
+		}
+		item.ValueCopy(user)
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+
 }
