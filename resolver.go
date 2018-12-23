@@ -1,9 +1,19 @@
 package main
 
 import (
-	"github.com/dgraph-io/badger"
+	"fmt"
+
+	gql "github.com/graph-gophers/graphql-go"
 )
 
-type Resolver struct {
-	db *badger.DB
+type RootResolver struct {
+	db *DB
+}
+
+func (r *RootResolver) GetUser(args struct{ ID gql.ID }) {
+	user, err := getUser(r.db.DB, args.ID)
+	if err != nil {
+		//
+	}
+	fmt.Print(user)
 }
